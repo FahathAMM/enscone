@@ -3,12 +3,14 @@
 namespace App\Http\Livewire\Admin\Settings;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Spatie\DbDumper\Databases\MySql;
+use Illuminate\Support\Facades\Artisan;
 
 class SettingLivewire extends Component
 {
@@ -42,6 +44,11 @@ class SettingLivewire extends Component
         } else {
             $this->errorMessage = "This Not match with old Password";
         }
+    }
+
+    public function mount()
+    {
+        $this->getValues();
     }
 
     public function changePersonal()
@@ -79,6 +86,13 @@ class SettingLivewire extends Component
         session()->flash('success', 'About Added Successfully.');
     }
 
+    public function databaseBackup()
+    {
+        Artisan::call('config:clear');
+        Artisan::call('backup:run --only-db');
+        dd(Artisan::output());
+    }
+
     public function getValues()
     {
         $user = Auth::user();
@@ -97,12 +111,12 @@ class SettingLivewire extends Component
             $this->width = 100;
         }
 
-        $this->getValues();
+        // $this->getValues();
         $numberOfProfileViewed = DB::table('devices')->where('user_id', Auth::user()->id)->distinct('latest_ip_address')->count();
         return view('livewire.admin.settings.setting-livewire', [
             'user'                  => User::where('id', Auth::user()->id)->first(),
             'numberOfProfileViewed' => $numberOfProfileViewed,
-            'title'                 => config('app.name') .'|'. 'Profile',
+            'title'                 => config('app.name') . '|' . 'Profile',
         ])
             ->extends('layouts.app');
     }

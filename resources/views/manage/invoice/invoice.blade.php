@@ -208,7 +208,7 @@
                 @empty
                 @endforelse
                 <tr>
-                    <td colspan="2" rowspan="2">
+                    <td colspan="2" rowspan="4">
                         <b>Remark</b> <br>
                         {{ $order->remark }}
                     </td>
@@ -218,6 +218,14 @@
                 <tr>
                     <td class="fw-bold">Vat</td>
                     <td colspan="2" class="text-end"> {{ $order->vat }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Advance</td>
+                    <td colspan="2" class="text-end"> {{ $order->advance }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Remining Balance</td>
+                    <td colspan="2" class="text-end"> {{ $order->grand_total - $order->advance }}</td>
                 </tr>
                 <tr>
                     <th class="fw-bold total-amount-text">TOTAL AMOUNT (IN WORDS) AED</th>

@@ -17,48 +17,69 @@
                             </div>
                         @endif
 
-                             <form action="{{ route('invoice.update', ['id' => $order->id]) }}" method="POST"
-                                enctype="multipart/form-data">
-                                @method('PUT')
+                        <form action="{{ route('invoice.update', ['id' => $order->id]) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @method('PUT')
+                            @csrf
+                            <div class="form-group">
+                                <label for="">Customer Name</label>
+                                <input type="text" name="customer_name" value="{{ $order->customer_name }}"
+                                    class="form-control form-control-sm" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Total</label>
+                                <input type="text" name="total" value="{{ $order->total }}"
+                                    class="form-control form-control-sm" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">LPO No</label>
+                                <input type="text" name="lpo_no" value="{{ $order->lpo_no }}"
+                                    class="form-control form-control-sm" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">VAT</label>
+                                <input type="text" name="vat" value="{{ $order->vat }}"
+                                    class="form-control form-control-sm" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Grand Total</label>
+                                <input type="text" name="grand_total" value="{{ $order->grand_total }}"
+                                    class="form-control form-control-sm" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Remark</label>
+                                <textarea rows="10" name="remark" class="form-control form-control-sm">{{ $order->remark }}
+
+                                    </textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+
+                        <h2>
+                            Services
+                        </h2>
+
+                        @foreach ($orderDetails as $orderDetail)
+                            <form
+                                action="{{ route('invoice.service.update', ['id' => $orderDetail->id, 'value' => $orderDetail->price]) }}"
+                                method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="">Customer Name</label>
-                                    <input type="text" name="customer_name" value="{{ $order->customer_name }}"
+                                    <label for=""> {{ $orderDetail->service_name }}</label>
+                                    <input type="text" name="value" value="{{ $orderDetail->price }}"
                                         class="form-control form-control-sm" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">Total</label>
-                                    <input type="text" name="total" value="{{ $order->total }}"
-                                        class="form-control form-control-sm" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">LPO No</label>
-                                    <input type="text" name="lpo_no" value="{{ $order->lpo_no }}"
-                                        class="form-control form-control-sm" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">VAT</label>
-                                    <input type="text" name="vat" value="{{ $order->vat }}"
-                                        class="form-control form-control-sm" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Grand Total</label>
-                                    <input type="text" name="grand_total" value="{{ $order->grand_total }}"
-                                        class="form-control form-control-sm" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="">Remark</label>
-                                    <textarea rows="10" name="remark"
-                                        class="form-control form-control-sm" >
-                                        {{ $order->remark }}
-                                    </textarea>
-                                </div>
-
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Update</button>
-                                 </div>
+                                    {{-- <a href="{{ route('invoice.service.update', ['id' => $orderDetail->id,'value' => $orderDetail->price]) }}"
+                                        type="submit" class="btn btn-primary">Update</a> --}}
+                                </div>
                             </form>
+                        @endforeach
 
                     </div>
                 </div>

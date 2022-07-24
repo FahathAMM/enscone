@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->string('total');
             $table->string('lpo_no');
             $table->string('vat');
+            $table->string('advance')->nullable();
             $table->string('grand_total');
             $table->text('remark')->nullable();
             $table->timestamps();

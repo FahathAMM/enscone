@@ -17,7 +17,21 @@ class ReportController extends Controller
     public function edit($id)
     {
         $order = Order::find($id);
-        return view('manage.invoice.edit', ['order' => $order]);
+        $orderDetails = OrderDetails::where('order_id', $order->id)->get();
+        return view('manage.invoice.edit', ['order' => $order, 'orderDetails' => $orderDetails]);
+    }
+
+
+    public function invoiceServiceUpdate(Request $req, $id)
+    {
+
+        $orderUpdate = OrderDetails::where('id', $id)->update(['price' => $req->value]);
+        // $gg =   $orderUpdate->update(['price' => $value]);
+
+        // Flight::where('active', 1)
+        // ->where('destination', 'San Diego')
+        // ->update(['delayed' => 1]);
+        return $orderUpdate;
     }
 
     public function generateInvoice($id)
@@ -32,48 +46,49 @@ class ReportController extends Controller
 
 
 
-         $order = Order::find($id);
+        $order = Order::find($id);
         $customer = Customer::find($order->customer_id);
-            $orderDetails = OrderDetails::where('order_id', $order->id)->get();
+        $orderDetails = OrderDetails::where('order_id', $order->id)->get();
 
-              $order->grand_total;
-                // $gg = number_format($order->grand_total,2);
+        $order->grand_total;
+        // $gg = number_format($order->grand_total,2);
 
-           $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
-             $amountLatter = $f->format($order->grand_total);
-
-
+        $f = new NumberFormatter("en", NumberFormatter::SPELLOUT);
+        $amountLatter = $f->format($order->grand_total);
 
 
 
-          $isFloat = str_contains($amountLatter,'point');
 
-             $countAfterpoint = strlen(substr(strrchr($order->grand_total, "."), 1));
+
+        $isFloat = str_contains($amountLatter, 'point');
+
+        $countAfterpoint = strlen(substr(strrchr($order->grand_total, "."), 1));
 
         //  return  $amountLatter = $amountLatter . ' ' . 'Zero';
 
-        if(!$isFloat){
+        if (!$isFloat) {
             $amountLatter = $amountLatter . ' ' . ' Point Zero ';
         }
 
 
-        if($countAfterpoint==1){
+        if ($countAfterpoint == 1) {
             $amountLatter = $amountLatter . ' ' . 'Zero';
         }
 
 
 
         // return view('manage.invoice.invoice', ['order' => $order, 'customer' => $customer, 'orderDetails' => $orderDetails,'amountLatter'=>$amountLatter]);
-       return  view('manage.invoice.invoice', [
-        'isFloat'=>$isFloat,
-        'order' => $order,
-        'customer' => $customer,
-        'orderDetails'  => $orderDetails,
-        'amountLatter'=>$amountLatter,
 
-        'countAfterpoint'=>$countAfterpoint
-    ]);
 
+        return  view('manage.invoice.invoice', [
+            'isFloat' => $isFloat,
+            'order' => $order,
+            'customer' => $customer,
+            'orderDetails'  => $orderDetails,
+            'amountLatter' => $amountLatter,
+
+            'countAfterpoint' => $countAfterpoint
+        ]);
     }
 
 

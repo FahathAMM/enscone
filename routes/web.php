@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\CustomersController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\ServicesController;
+use App\Http\Controllers\admin\SettingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Admin\About\AboutUs;
@@ -25,13 +26,7 @@ use App\Http\Livewire\Admin\Dashboard\UserDashboardLivewire;
 use App\Http\Livewire\Admin\Experiences\ExperiencesLivewire;
 use App\Http\Livewire\Admin\Dashboard\AdminDashboardLivewire;
 use App\Http\Livewire\Bill\BillLivewire;
-
-
-
-
-
-
-
+use App\Http\Livewire\Quotation\QuotationLivewire;
 
 Route::redirect('/', 'login', 301);
 
@@ -67,6 +62,7 @@ Route::group(['middleware' => ['role:developer|admin|user', 'auth'], 'prefix' =>
     Route::resource('products', ProductController::class);
     Route::resource('customers', CustomersController::class);
     Route::resource('services', ServicesController::class);
+    Route::resource('terms', SettingController::class);
 
     Route::get('/', [DashboardController::class, 'index']);
 
@@ -82,7 +78,13 @@ Route::group(['middleware' => ['role:developer|admin|user', 'auth'], 'prefix' =>
 Route::view('/notaccess', 'notaccess');
 
 Route::get('bill', BillLivewire::class)->name('bill');
+
+Route::get('quotation', QuotationLivewire::class)->name('quotation');
+Route::get('/generate-quotation/{quotation}', [SettingController::class, 'generateQuotation'])->name('generate.quotation');
+
+
 Route::get('/generateInvoice/{orderNumber}', [ReportController::class, 'generateInvoice'])->name('generate.invoice');
 Route::get('/invoice', [ReportController::class, 'index'])->name('invoice');
 Route::get('/invoice-edit/{id}', [ReportController::class, 'edit'])->name('invoice.edit');
 Route::put('/invoice-update/{id}', [ReportController::class, 'update'])->name('invoice.update');
+Route::post('/invoice-service-update/{id}', [ReportController::class, 'invoiceServiceUpdate'])->name('invoice.service.update');

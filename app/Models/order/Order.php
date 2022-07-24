@@ -17,6 +17,7 @@ class Order extends Model
         'vat',
         'grand_total',
         'customer_name',
-        'remark'
+        'remark',
+        'advance',
     ];
 }

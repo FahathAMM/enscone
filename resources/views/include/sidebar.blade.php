@@ -26,6 +26,7 @@
                     <li><a href="{{ route('services.index') }}">Services</a></li>
                     <li><a href="{{ route('bill') }}">Bill</a></li>
                     <li><a href="{{ route('invoice') }}">Invoice</a></li>
+                    <li><a href="{{ route('terms.index') }}">Term & Condition</a></li>
                     {{-- <li><a href="{{ route('Portfolio.skill') }}">Skills</a></li>
                     <li><a href="{{ route('Portfolio.education') }}">Education</a></li>
                     <li><a href="{{ route('Portfolio.experiences') }}">Experiences</a></li>

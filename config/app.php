@@ -54,9 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    // 'asset_url' => env('ASSET_URL', null),
+    'asset_url' => env('ASSET_URL', null),
 
-    'asset_url' => env('ASSET_URL', 'http://localhost/enscone/public'),
+    // 'asset_url' => env('ASSET_URL', 'http://localhost/enscone/public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -179,7 +179,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Spatie\Permission\PermissionServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
     ],
 
     /*

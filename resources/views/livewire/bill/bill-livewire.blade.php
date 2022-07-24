@@ -257,8 +257,8 @@
 
                                         </td>
                                         <td style="width:1%">
-                                            <input type="number" wire:model="newQty" wire:click='changeQty' value="1"
-                                                class="form-control">
+                                            <input type="number" wire:model="newQty" wire:click='changeQty'
+                                                value="1" class="form-control">
                                             @error('newQty')
                                                 <span class="error text-danger">{{ $message }}</span>
                                             @enderror
@@ -267,7 +267,8 @@
                                         <td>
                                             <h5 class="mt-1" id="price">{{ $total }} </h5>
                                         </td>
-                                        <td><button wire:click='addToBill' id="add" class="btn btn-success">Add</button>
+                                        <td><button wire:click='addToBill' id="add"
+                                                class="btn btn-success">Add</button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -302,7 +303,8 @@
                         <div class="invoice p-5">
                             <img src="{{ asset('images/elogo.png') }}" width="50">
                             <h5>ENSCONE</h5>
-                            <select wire:change="getCustomer" wire:model="customerId" class="form-control" style="
+                            <select wire:change="getCustomer" wire:model="customerId" class="form-control"
+                                style="
                             height: 32px;">
                                 <option value="">select customer</option>
                                 @foreach ($customers as $customer)
@@ -315,7 +317,8 @@
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror
                             <br>
-                            <input type="text" placeholder="LPO No." class="form-control w-50" wire:model.defer="lpo_no">
+                            <input type="text" placeholder="LPO No." class="form-control w-50"
+                                wire:model.defer="lpo_no">
                             @error('lpo_no')
                                 <span class="error text-danger">{{ $message }}</span>
                             @enderror
@@ -338,8 +341,7 @@
                                                         No</span> <span>MT12332345</span> </div>
                                             </td>
                                             <td>
-                                                <div class="py-2"> <span
-                                                        class="d-block text-muted">Payment</span>
+                                                <div class="py-2"> <span class="d-block text-muted">Payment</span>
                                                     <span><img
                                                             src="https://img.icons8.com/color/48/000000/mastercard.png"
                                                             width="20" /></span>
@@ -413,8 +415,8 @@
                                         <tbody class="totals">
                                             <tr>
                                                 <td>
-                                                    <div class="text-left"> <span
-                                                            class="text-muted">SubTotal</span> </div>
+                                                    <div class="text-left"> <span class="text-muted">SubTotal</span>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="text-right"> <span>AED {{ $totalAmount }} </span>
@@ -423,11 +425,27 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <div class="text-left"> <span
-                                                            class="text-muted">VatTotal</span> </div>
+                                                    <div class="text-left"> <span class="text-muted">VatTotal</span>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="text-right"> <span>AED {{ $totalVat }} </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div class="text-left"> <span class="text-muted">Advance</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="text-right">
+                                                        <span>
+                                                            <input type="number" wire:model="advance"
+                                                                wire:keydown.enter="calAdvance('{{ $totalAmount + $totalVat }}')"
+                                                                class="form-control" name="" id="">
+                                                        </span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -439,10 +457,23 @@
                                                             class="font-weight-bold">Total</span> </div>
                                                 </td>
                                                 <td>
-                                                    <div class="text-right"> <span class="font-weight-bold">AED
-                                                            {{ $totalAmount + $totalVat }}
-                                                        </span>
+                                                    <div wire:loading
+                                                        wire:target="calAdvance('{{ $totalAmount + $totalVat }}')">
+                                                        <div class="spinner-border text-primary" role="status">
+                                                        </div>
                                                     </div>
+
+                                                    @if ($showAdvanceCalAmount)
+                                                        <div class="text-right"> <span class="font-weight-bold">AED
+                                                                {{ $AdvanceCalAmount }}
+                                                            </span>
+                                                        </div>
+                                                    @else
+                                                        <div class="text-right"> <span class="font-weight-bold">AED
+                                                                {{ $totalAmount + $totalVat }}
+                                                            </span>
+                                                        </div>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr class="border-top border-bottom">
@@ -480,12 +511,14 @@
                                 <button wire:click="order('{{ $totalAmount }}')" class="btn btn-primary gradient-2"
                                     style="width: 48%;padding: 5%;font-size: 32px;font-weight: 400;">
                                     <div wire:loading wire:target="order">
-                                        <div class="lds-dual-ring" style="
+                                        <div class="lds-dual-ring"
+                                            style="
                                     display: inline-block;
                                        width: 75px;
                                        height: 37px;
                                        margin: 0px 13px 7px 9px
-                                  "></div>
+                                  ">
+                                        </div>
                                     </div>
                                     <i class="fa fa-money"></i>
                                     Bill
@@ -494,12 +527,14 @@
                                 <button wire:click="clear()" class="btn btn-primary gradient-1"
                                     style="width: 48%;padding: 5%;font-size: 32px;font-weight: 400;">
                                     <div wire:loading wire:target="clear">
-                                        <div class="lds-dual-ring" style="
+                                        <div class="lds-dual-ring"
+                                            style="
                                     display: inline-block;
                                        width: 75px;
                                        height: 37px;
                                        margin: 0px 13px 7px 9px
-                                  "></div>
+                                  ">
+                                        </div>
                                     </div>
                                     <i class="	fa fa-trash-o"></i>
                                     Clear

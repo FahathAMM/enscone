@@ -30,6 +30,10 @@ class BillLivewire extends Component
     public $lpo_no;
     public $remark;
 
+    public $advance = 0;
+    public $AdvanceCalAmount;
+    public $showAdvanceCalAmount = false;
+
 
     protected $rules = [
         'customerId' => 'required|',
@@ -42,6 +46,14 @@ class BillLivewire extends Component
     {
         $this->total = $this->amount * $this->newQty;
     }
+
+    public function calAdvance($totalAmount)
+    {
+        $this->AdvanceCalAmount = $totalAmount - $this->advance;
+        $this->showAdvanceCalAmount = true;
+    }
+
+
 
     public function checkBalance()
     {
@@ -108,7 +120,7 @@ class BillLivewire extends Component
         $sumTot = Bill::sum('amount');
 
         // $grand_total = ((int)$sumVat + (int)$totalAmount);
-         $grand_total = ($sumVat + $sumTot);
+        $grand_total = ($sumVat + $sumTot);
         // dd($grand_total);
 
 
@@ -134,6 +146,7 @@ class BillLivewire extends Component
             'total' =>  $totalAmount,
             'vat' => $sumVat,
             'grand_total' => $grand_total,
+            'advance' => $this->advance,
             // 'grand_total' =>  number_format($grand_total,2),
 
             'remark' => $this->remark,
